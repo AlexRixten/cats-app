@@ -9,18 +9,17 @@ export const CatCard = ({ catCard }) => {
     const catsList = store.getState().app.catsList
     const dispatch = useDispatch();
 
-    const [love, setLove] = useState(false)
+    const [love, setLove] = useState(catCard.love)
 
-    useEffect(() => {
-        localStorage.setItem('cats', JSON.stringify(catsList))
-    }, [catsList])
 
     const toggleLove = () => {
         if (!love) {
-            dispatch(addCatItemAction([catCard]))
+            dispatch(addCatItemAction([{...catCard, love:true}]))
+            catCard.love = true
         }
         if (love) {
             dispatch(deleteCatItemAction(catCard.id))
+            catCard.love = false
         }
         setLove(!love)
     }
@@ -28,7 +27,7 @@ export const CatCard = ({ catCard }) => {
     return (
         <div className="cat__card">
             <img src={catCard.url} alt="cat" />
-            <button className="cat__btn" onClick={toggleLove}><i className={love ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i></button>
+            <button className="cat__btn" onClick={toggleLove}><i className={catCard.love ? "fa-solid fa-heart" : (love ? "fa-solid fa-heart" : "fa-regular fa-heart")}></i></button>
         </div>
     )
 }
