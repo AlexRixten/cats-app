@@ -8,7 +8,7 @@ const Navbar = (props) => {
             <div className='container'>
                 <div className='nav__block'>
                     <div>
-                        <NavLink className='navbar__item' to='/cats'>Все котики</NavLink>
+                        <NavLink className='navbar__item' to='/'>Все котики</NavLink>
                     </div>
                     <div>
                         <NavLink className='navbar__item' to='/lovely'>Любимые котики</NavLink>
