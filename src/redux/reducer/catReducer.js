@@ -14,7 +14,7 @@ export const catReducer = (state = initialState, action) => {
         case CAT_ITEM:
             return {
                 ...state,
-                catsList: [...state.catsList, ...action.payload ]
+                catsList: [...action.payload,...state.catsList ]
             }
             case CAT_DELETE_ITEM:
                 return {

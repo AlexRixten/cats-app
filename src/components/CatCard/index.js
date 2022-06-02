@@ -1,16 +1,18 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
+import { store } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { addCatItemAction, deleteCatItemAction } from "../../redux/reducer/catReducer";
 import './CatCard.css'
 
 export const CatCard = ({ catCard }) => {
 
-    // const catsList = store.getState().app.catsList
+    const catsList = store.getState().app.catsList
     const dispatch = useDispatch();
 
-
     const [love, setLove] = useState(catCard.love)
-
+    if(catCard.love === undefined){
+        catCard.love = false
+    }
 
     const toggleLove = () => {
         if (!love) {
@@ -19,10 +21,10 @@ export const CatCard = ({ catCard }) => {
         }
         if (love) {
             dispatch(deleteCatItemAction(catCard.id))
+            catCard.love = false
         }
         setLove(!love)
     }
-    console.log()
 
     return (
         <div className="cat__card">

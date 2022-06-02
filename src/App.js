@@ -17,18 +17,16 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1)
   const [fetching, setFetching] = useState(true)
   const [totalCount, setTotalCount] = useState(0)
+  const [error, setError] = useState(null)
 
   const dispatch = useDispatch()
 
-
-  const [error, setError] = useState(null)
-
   useEffect(() => {
     if (fetching) {
-      axios.get(`https://api.thecatapi.com/v1/images/search?limit=15&page=${currentPage}`)
+      axios.get(`https://api.thecatapi.com/v1/images/search?limit=2&page=${currentPage}`)
         .then((response) => {
           console.log(response)
-          setCatCard([...catCard,...response?.data]);
+          setCatCard([...catCard, ...response?.data]);
           setTotalCount(response?.headers['content-length'])
           setCurrentPage(prevState => prevState + 1)
         }).catch(error => {
@@ -40,25 +38,36 @@ function App() {
   }, [fetching]);
 
 
-  useEffect(() => {
-    document.addEventListener('scroll', scrollHandler)
-    return function () {
-      document.removeEventListener('scroll', scrollHandler)
-    }
-  })
+  // useEffect(() => {
+  //   document.addEventListener('scroll', scrollHandler)
+  //   return function () {
+  //     document.removeEventListener('scroll', scrollHandler)
+  //   }
+  // })
 
   const scrollHandler = (e) => {
-    if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight ) < 100 && catCard.length < totalCount ){
-      console.log(1)
+    if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100 && catCard.length < totalCount) {
       setFetching(true)
     }
   }
 
   useEffect(() => {
+    if(catsList.length === 0){
+      if(localStorage.getItem('cats') !== null){
+        if(JSON.parse(localStorage.getItem('cats')).length === 1){
+          localStorage.removeItem('cats');
+        }
+        else{
+          dispatch(addCatItemAction(JSON.parse(localStorage.getItem('cats'))))
+        }
+      }
+      // else{
+      //   localStorage.removeItem('cats');
+      //   localStorage.setItem('cats', JSON.stringify([]))
+      // }
+    }
     if (catsList.length !== 0) {
       localStorage.setItem('cats', JSON.stringify(catsList))
-    } else if (localStorage.getItem('cats') !== null) {
-      dispatch(addCatItemAction(JSON.parse(localStorage.getItem('cats'))))
     }
   }, [catsList])
 
