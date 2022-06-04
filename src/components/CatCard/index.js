@@ -1,35 +1,19 @@
-import React, { useState, useEffect} from "react";
-import { store } from "../../redux/store";
-import { useDispatch } from "react-redux";
-import { addCatItemAction, deleteCatItemAction } from "../../redux/reducer/catReducer";
+import React, { useContext } from "react";
+import { Context } from "../useContext";
 import './CatCard.css'
 
 export const CatCard = ({ catCard }) => {
 
-    const catsList = store.getState().app.catsList
-    const dispatch = useDispatch();
-
-    const [love, setLove] = useState(catCard.love)
-    if(catCard.love === undefined){
-        catCard.love = false
-    }
-
-    const toggleLove = () => {
-        if (!love) {
-            dispatch(addCatItemAction([{...catCard, love:true}]))
-            catCard.love = true
-        }
-        if (love) {
-            dispatch(deleteCatItemAction(catCard.id))
-            catCard.love = false
-        }
-        setLove(!love)
-    }
+    const { toggleLike } = useContext(Context)
 
     return (
         <div className="cat__card">
             <img src={catCard.url} alt="cat" />
-            <button className="cat__btn" onClick={toggleLove}><i className={catCard.love ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i></button>
+            <button className="cat__btn"
+                onClick={() => toggleLike(catCard.id)}
+            >
+                <i className={catCard.love ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
+            </button>
         </div>
     )
 }

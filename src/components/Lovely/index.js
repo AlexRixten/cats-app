@@ -4,6 +4,7 @@ import { CatCard } from "../CatCard";
 
 export const Lovely = () => {
 
+
     const catsList = store.getState().app.catsList
 
     return (

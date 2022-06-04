@@ -3,16 +3,18 @@ import React from "react";
 import Preloader from "../common/Preloader/Preloader";
 import { CatCard } from "../CatCard";
 
-const MainPage = (props) => {
+const MainPage = ({ catCard,error}) => {
 
-    if (props.error) return `Error: ${props.error.message}`;
-    if (!props.catCard) {
-        return <Preloader />
+    if (error) return `Error: ${error.message}`;
+    
+    if (!catCard) {
+        <Preloader />
+        return 
     }
 
     return (
-        <div className="cat__wrapper">
-            {props.catCard?.map(item => <CatCard key={item.id} catCard={item} />)}
+        <div id="cat__wrapper" className="cat__wrapper">
+            {catCard?.map(item => <CatCard key={item.id} catCard={item} />)}
         </div>
     )
 }
